@@ -18,17 +18,19 @@ class Space extends StatefulWidget {
 }
 
 class _SpaceState extends State<Space> {
-  var firstStart = true;
+  var conf = true;
 
   _setUp() {
-    firstStart = false;
     var m = MediaQuery.of(context).size;
-    widget.bloc.maxPos = StarModel(x: m.width.toInt(), y: m.height.toInt());
-    widget.bloc.generateStars();
+    widget.bloc.max = StarModel(x: m.width.toInt(), y: m.height.toInt());
+    if (m.width > 0 && m.height > 0) {
+      conf = false;
+      widget.bloc.generateStars();
+    }
   }
 
   Widget build(_) {
-    if (firstStart) _setUp();
+    if (conf) _setUp();
     var stl = TextStyle(color: W, fontSize: 24);
     return Scaffold(
       backgroundColor: Colors.black,
@@ -53,7 +55,7 @@ class _SpaceState extends State<Space> {
                             : Container(),
                       ),
                       Stack(
-                          children: widget.bloc.stars
+                          children: widget.bloc.str
                               .map((str) => Star(
                                     key: ObjectKey(str),
                                     mod: str,
