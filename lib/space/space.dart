@@ -1,4 +1,4 @@
-import 'dart:math' as math;
+import 'dart:math' as m;
 
 import 'package:flutter/material.dart';
 import 'package:progress_indicators/progress_indicators.dart';
@@ -22,7 +22,7 @@ class _SpaceState extends State<Space> {
 
   _setUp() {
     var m = MediaQuery.of(context).size;
-    widget.bloc.max = StarModel(x: m.width.toInt(), y: m.height.toInt());
+    widget.bloc.max = STR(x: m.width.toInt(), y: m.height.toInt());
     if (m.width > 0 && m.height > 0) {
       conf = false;
       widget.bloc.generateStars();
@@ -37,8 +37,8 @@ class _SpaceState extends State<Space> {
       body: StreamBuilder(
           stream: widget.bloc.stream,
           initialData: 0,
-          builder: (_, snapshot) {
-            return snapshot.data == 2
+          builder: (_, snp) {
+            return snp.data == 2
                 ? Center(
                     child: ScalingText(
                     "You've found the Flutter 🌟!",
@@ -47,7 +47,7 @@ class _SpaceState extends State<Space> {
                 : Stack(
                     children: <Widget>[
                       Center(
-                        child: snapshot.data == 1
+                        child: snp.data == 1
                             ? JumpingText(
                                 'Loading...⏳',
                                 style: stl,
@@ -70,7 +70,7 @@ class _SpaceState extends State<Space> {
 }
 
 class Star extends StatefulWidget {
-  final StarModel mod;
+  final STR mod;
   final Function tap;
   final Key key;
 
@@ -104,12 +104,12 @@ class _StarState extends State<Star> with SingleTickerProviderStateMixin {
   Widget build(_) => Positioned(
         top: widget.mod.y.toDouble(),
         left: widget.mod.x.toDouble(),
-        width: 3,
-        height: 3,
+        width: widget.mod.size.toDouble(),
+        height: widget.mod.size.toDouble(),
         child: InkWell(
           onTap: widget.tap,
           child: Transform.rotate(
-            angle: 45 * (math.pi / 180),
+            angle: 45 * (m.pi / 180),
             child: AnimatedBuilder(
               animation: _anim,
               builder: (_, __) => Container(
@@ -127,14 +127,14 @@ class _StarState extends State<Star> with SingleTickerProviderStateMixin {
   }
 }
 
-class StarModel {
-  final int x, y;
+class STR {
+  final int x, y, size;
   final Color color;
 
-  StarModel({this.x, this.y, this.color});
+  STR({this.x, this.y, this.color, this.size});
 
   @override
-  bool operator ==(o) => o is StarModel && x == o.x && y == o.y;
+  bool operator ==(o) => o is STR && x == o.x && y == o.y;
 
   @override
   int get hashCode => super.hashCode;

@@ -8,8 +8,8 @@ class SpaceBloc {
   final BehaviorSubject<int> _subject;
   final ValueObservable<int> stream;
   var rdm = Random();
-  StarModel max;
-  HashSet<StarModel> str = HashSet(hashCode: (v) => v.x.toInt());
+  STR max;
+  HashSet<STR> str = HashSet(hashCode: (v) => v.x);
 
   factory SpaceBloc() => SpaceBloc._(subject: BehaviorSubject<int>());
 
@@ -21,7 +21,7 @@ class SpaceBloc {
     for (var i = 0; i < 10; i++) {
       var st = 0;
       while (st < 20)
-        if (str.add(await _getRandomStr((max.y * (i / 10)).toInt()))) {
+        if (str.add(await _getStr((max.y * (i / 10)).toInt()))) {
           st++;
           _subject.add(1);
         }
@@ -29,20 +29,23 @@ class SpaceBloc {
     _subject.add(0);
   }
 
-  onTap(StarModel str) {
+  onTap(STR str) {
     if (str.x % 2 == 0 && str.y % 2 == 0 && str.color == B) _subject.add(2);
   }
 
-  Future<StarModel> _getRandomStr(int y) async {
+  Future<STR> _getStr(int y) async {
     await Future.delayed(Duration(milliseconds: 50), () {});
-    return StarModel(
-        color: getColor(),
+    return STR(
+        color: getC(),
+        size: getS(),
         x: rdm.nextInt(max.x),
         y: y + rdm.nextInt((max.y * 0.1).toInt()));
   }
 
-  getColor() {
-    var r = rdm.nextInt(10);
-    return r == 0 ? Y : r == 1 ? B : W;
+  getC() {
+    var c = rdm.nextInt(10);
+    return c == 0 ? Y : c == 1 ? B : W;
   }
+
+  getS() => 3 + rdm.nextInt(3);
 }
