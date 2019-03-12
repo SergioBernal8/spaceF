@@ -79,23 +79,22 @@ class Star extends StatefulWidget {
 }
 
 class _StarState extends State<Star> with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  AnimationController _ctr;
   Animation<Color> _anim;
 
   @override
   void initState() {
-    _controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _ctr = AnimationController(vsync: this, duration: Duration(seconds: 1));
     _anim = ColorTween(
             begin: widget.mod.color.withOpacity(0.2), end: widget.mod.color)
-        .animate(_controller);
+        .animate(_ctr);
 
-    _controller.addListener(() {
-      if (_controller.isCompleted) {
-        _controller.reverse().then((_) => _controller.forward());
+    _ctr.addListener(() {
+      if (_ctr.isCompleted) {
+        _ctr.reverse().then((_) => _ctr.forward());
       }
     });
-    _controller.forward();
+    _ctr.forward();
     super.initState();
   }
 
@@ -121,7 +120,7 @@ class _StarState extends State<Star> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _ctr.dispose();
     super.dispose();
   }
 }
